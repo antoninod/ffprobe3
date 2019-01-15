@@ -20,7 +20,7 @@ class FFProbe:
         self.video_file = video_file
         try:
             with open(os.devnull, 'w') as tempf:
-                subprocess.check_call(["ffprobe", "-h"], stdout=tempf, stderr=tempf)
+                subprocess.check_call(["ffprobe", "-h"], stdin=tempf, stdout=tempf, stderr=tempf)
         except:
             raise IOError('ffprobe not found.')
         if os.path.isfile(video_file):
@@ -29,7 +29,7 @@ class FFProbe:
             else:
                 cmd = ["ffprobe -show_streams " + pipes.quote(self.video_file)]
 
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=os.devnull, shell=True)
             self.format = None
             self.created = None
             self.duration = None
